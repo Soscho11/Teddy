@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Teddy Surprise 🧸💖</title>
+
+<style>
+*{box-sizing:border-box; margin:0; padding:0; font-family:'Poppins', sans-serif;}
+body{
+    height:100vh;
+    background:linear-gradient(135deg,#ffd6e8,#ffe9c6);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+    touch-action: manipulation;
+}
+.screen{position:absolute; width:100%; height:100%; display:flex; flex-direction:column; justify-content:center; align-items:center; transition:0.8s;}
+.hidden{opacity:0; pointer-events:none; transform:scale(0.9);}
+h1{font-size:calc(1.5rem + 2vw); color:#ff4d88; margin-bottom:30px; text-align:center;}
+.buttons{display:flex; gap:15vw; flex-wrap:wrap; justify-content:center;}
+button{padding:15px 25px; font-size:1.2rem; border:none; border-radius:40px; cursor:pointer; transition:.3s; touch-action: manipulation;}
+#yesBtn{background:#ff4d88; color:white; box-shadow:0 10px 20px rgba(255,77,136,0.4);}
+#yesBtn:hover{transform:scale(1.1);}
+#noBtn{background:white; color:#ff4d88; position:absolute;}
+.heart-float{position:absolute; width:18px; height:18px; background:red; transform:rotate(45deg); animation:float 3s linear forwards;}
+.heart-float:before,.heart-float:after{content:""; position:absolute; width:18px; height:18px; background:red; border-radius:50%;}
+.heart-float:before{top:-9px; left:0;}
+.heart-float:after{left:-9px; top:0;}
+.teddy-options{display:flex; gap:15vw; flex-wrap:wrap; justify-content:center;}
+.teddy-option{width:20vw; height:20vw; min-width:80px; min-height:80px; border-radius:50%; display:flex; justify-content:center; align-items:center; font-size:calc(3rem + 1vw); cursor:pointer; transition:.3s; box-shadow:0 8px 15px rgba(0,0,0,0.2);}
+.teddy-option:hover{transform:scale(1.15) rotate(5deg);}
+.teddy{position:relative; width:40vw; max-width:220px; height:50vw; max-height:260px; animation:bounce 3s infinite ease-in-out;}
+.body{position:absolute; bottom:0; left:50%; transform:translateX(-50%); width:80%; height:60%; background:var(--teddy-color,#c68642); border-radius:90px;}
+.head{position:absolute; top:0; left:50%; transform:translateX(-50%); width:70%; height:55%; background:var(--teddy-color,#c68642); border-radius:50%;}
+.ear{position:absolute; top:-10%; width:25%; height:25%; background:var(--teddy-color,#c68642); border-radius:50%;}
+.ear.left{left:5%;}
+.ear.right{right:5%;}
+.eye{position:absolute; top:40%; width:10%; height:10%; background:black; border-radius:50%; animation:blink 4s infinite;}
+.eye.left{left:28%;}
+.eye.right{right:28%;}
+.nose{position:absolute; top:55%; left:50%; transform:translateX(-50%); width:11%; height:8%; background:#5a2d0c; border-radius:50%;}
+.arm{position:absolute; top:50%; width:25%; height:35%; background:var(--teddy-color,#c68642); border-radius:30px; animation:wave 2s infinite alternate;}
+.arm.left{left:-15%;}
+.arm.right{right:-15%; animation-delay:1s;}
+.heart{position:absolute; top:65%; left:50%; transform:translateX(-50%) rotate(45deg); width:14%; height:14%; background:#ff4d88; animation:heartbeat 1.5s infinite;}
+.heart:before,.heart:after{content:""; position:absolute; width:100%; height:100%; background:#ff4d88; border-radius:50%;}
+.heart:before{top:-50%; left:0;}
+.heart:after{left:-50%; top:0;}
+.final-text{margin-top:30px; font-size:calc(1rem + 1vw); color:#ff4d88; text-align:center;}
+@keyframes bounce{0%,100%{ transform:translateY(0);} 50%{ transform:translateY(-5%);}}
+@keyframes blink{0%,90%,100%{ height:100%;} 92%,96%{ height:10%;}}
+@keyframes wave{from{ transform:rotate(0deg);} to{ transform:rotate(15deg);}}
+@keyframes heartbeat{0%,100%{ transform:translateX(-50%) rotate(45deg) scale(1);} 50%{ transform:translateX(-50%) rotate(45deg) scale(1.3);}}
+@keyframes float{to{transform:translateY(-300px) rotate(45deg);opacity:0;}}
+</style>
+</head>
+<body>
+
+<div class="screen" id="screen1">
+    <h1>Will you accept the teddy? 🧸💖</h1>
+    <div class="buttons">
+        <button id="yesBtn">Yes 💕</button>
+        <button id="noBtn">No 🙈</button>
+    </div>
+</div>
+
+<div class="screen hidden" id="screen2">
+    <h1>Choose your teddy 🎀</h1>
+    <div class="teddy-options">
+        <div class="teddy-option" data-color="#c68642">🧸</div>
+        <div class="teddy-option" data-color="#f4d3b6">🧸</div>
+        <div class="teddy-option" data-color="#ffc0cb">🧸</div>
+    </div>
+</div>
+
+<div class="screen hidden" id="screen3">
+    <div class="teddy" style="--teddy-color:#c68642">
+        <div class="head">
+            <div class="ear left"></div>
+            <div class="ear right"></div>
+            <div class="eye left"></div>
+            <div class="eye right"></div>
+            <div class="nose"></div>
+        </div>
+        <div class="body"></div>
+        <div class="arm left"></div>
+        <div class="arm right"></div>
+        <div class="heart"></div>
+    </div>
+    <div class="final-text" id="finalText"></div>
+</div>
+
+<script>
+let userName = prompt("What’s your name? 💖") || "Friend";
+document.getElementById('finalText').innerHTML = `This teddy is just for ${userName} 🧸💞<br>You are its favorite human 🥰`;
+
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+const screen1 = document.getElementById("screen1");
+const screen2 = document.getElementById("screen2");
+const screen3 = document.getElementById("screen3");
+
+// Mobile & desktop friendly No button
+noBtn.addEventListener("pointerover",()=>{
+    const x = Math.random() * (window.innerWidth - 100);
+    const y = Math.random() * (window.innerHeight - 50);
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+});
+
+yesBtn.onclick = ()=>{
+    screen1.classList.add('hidden');
+    screen2.classList.remove('hidden');
+    setInterval(()=>{
+        const h = document.createElement('div');
+        h.className='heart-float';
+        h.style.left=Math.random()*100+'vw';
+        h.style.bottom='0';
+        document.body.appendChild(h);
+        setTimeout(()=>h.remove(),3000);
+    },600);
+};
+
+document.querySelectorAll('.teddy-option').forEach(opt=>{
+    opt.onclick=()=>{
+        const color = opt.getAttribute('data-color');
+        document.querySelector('.teddy').style.setProperty('--teddy-color',color);
+        screen2.classList.add('hidden');
+        screen3.classList.remove('hidden');
+    }
+});
+</script>
+
+</body>
+</html>
